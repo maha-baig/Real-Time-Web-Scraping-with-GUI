@@ -3,6 +3,7 @@ from tkinter import ttk
 import pandas as pd
 import subprocess
 import webbrowser
+import sys
 
 # Load Data
 def load_data():
@@ -18,7 +19,7 @@ root.configure(bg="#1E1E1E")
 
 # --- Refresh Data ---
 def refresh_data():
-    subprocess.run(["python", "scraper.py"])
+    subprocess.run([sys.executable, "scraper.py"])
     global df
     df = load_data()
     update_table(df)
