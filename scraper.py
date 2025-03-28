@@ -1,69 +1,60 @@
 import requests
 from bs4 import BeautifulSoup
 import pandas as pd
-from textblob import TextBlob
-from datetime import datetime
 
-NEWS_SOURCES = {
-    "Al Jazeera": "https://www.aljazeera.com/news/",
-    "BBC": "https://www.bbc.com/news",
-    "CNN": "https://edition.cnn.com/world"
-}
-
-HEADERS = {"User-Agent": "Mozilla/5.0"}
-
-def get_aljazeera_news():
-    response = requests.get(NEWS_SOURCES["Al Jazeera"], headers=HEADERS)
+# Function to scrape Al Jazeera
+def scrape_aljazeera():
+    url = "https://www.aljazeera.com/news/"
+    response = requests.get(url)
     soup = BeautifulSoup(response.text, "html.parser")
+
     articles = soup.find_all("article")
-    
     news_data = []
+
     for article in articles:
-        headline_tag = article.find("h3")
-        if headline_tag:
-            title = headline_tag.text.strip()
-            link = "https://www.aljazeera.com" + article.find("a")["href"]
-            news_data.append(["Al Jazeera", title, link])
+        headline = article.find("h3")
+        if headline:
+            news_data.append(["Al Jazeera", headline.text.strip(), url])
+
     return news_data
 
-def get_bbc_news():
-    response = requests.get(NEWS_SOURCES["BBC"], headers=HEADERS)
+# Function to scrape BBC
+def scrape_bbc():
+    url = "https://www.bbc.com/news"
+    response = requests.get(url)
     soup = BeautifulSoup(response.text, "html.parser")
-    articles = soup.select("h3 a")
-    
+
+    articles = soup.find_all("h3")  # Modify selector based on site structure
     news_data = []
+
     for article in articles:
-        title = article.text.strip()
-        link = "https://www.bbc.com" + article["href"]
-        news_data.append(["BBC", title, link])
+        if article.a:
+            headline = article.text.strip()
+            news_data.append(["BBC", headline, url])
+
     return news_data
 
-def get_cnn_news():
-    response = requests.get(NEWS_SOURCES["CNN"], headers=HEADERS)
+# Function to scrape CNN
+def scrape_cnn():
+    url = "https://edition.cnn.com/world"
+    response = requests.get(url)
     soup = BeautifulSoup(response.text, "html.parser")
-    articles = soup.select("h3 a")
-    
+
+    articles = soup.find_all("span", class_="container__headline")
     news_data = []
+
     for article in articles:
-        title = article.text.strip()
-        link = "https://edition.cnn.com" + article["href"]
-        news_data.append(["CNN", title, link])
+        headline = article.text.strip()
+        news_data.append(["CNN", headline, url])
+
     return news_data
 
-def analyze_sentiment(text):
-    return TextBlob(text).sentiment.polarity  # Returns a value between -1 (negative) to +1 (positive)
+# Combine all scraped data
+news_sources = [scrape_aljazeera(), scrape_bbc(), scrape_cnn()]
+all_news = [item for source in news_sources for item in source]
 
-def scrape_news():
-    all_news = get_aljazeera_news() + get_bbc_news() + get_cnn_news()
-    df = pd.DataFrame(all_news, columns=["Source", "Headline", "URL"])
-    
-    # Add sentiment score
-    df["Sentiment"] = df["Headline"].apply(analyze_sentiment)
-    df["Timestamp"] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+# Convert to DataFrame and save to CSV
+df = pd.DataFrame(all_news, columns=["Source", "Headline", "URL"])
+df.to_csv("data/latest_news.csv", index=False)
 
-    # Save to CSV
-    df.to_csv("data/latest_news.csv", index=False)
-    print("✅ News Data Updated!")
-
-if __name__ == "__main__":
-    scrape_news()
+print("News scraping completed successfully.")
