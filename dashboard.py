@@ -5,7 +5,7 @@ import subprocess
 import matplotlib.pyplot as plt
 import seaborn as sns
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
-
+import sys
 # Load initial data
 def load_data():
     return pd.read_csv("data/latest_news.csv")
@@ -20,8 +20,7 @@ root.configure(bg="#1E1E1E")
 
 # --- REFRESH FUNCTION ---
 def refresh_data():
-    """Runs the scraper and updates the dashboard with new data."""
-    subprocess.run(["python", "scraper.py"])  # Run scraper
+    subprocess.run([sys.executable, "scraper.py"])
     global df
     df = load_data()  # Reload data
     filter_data()  # Refresh displayed content
