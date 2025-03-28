@@ -5,9 +5,11 @@ A real-time news scraper that fetches Al Jazeera headlines, processes data, and 
 # News Scraper & Analytics Dashboard
 
 ## 📌 Project Overview
+
 This project is a **real-time news scraper and analytics tool** that fetches news headlines from **Al Jazeera**. It processes, analyzes, and visualizes key insights dynamically. The project includes a **GUI for filtering and viewing trends**, making it easy to interact with the data.
 
 ## 🚀 Features
+
 - **Real-time web scraping** of Al Jazeera news headlines
 - **Data processing & filtering** for meaningful insights
 - **User-friendly GUI** for exploring trends
@@ -15,6 +17,7 @@ This project is a **real-time news scraper and analytics tool** that fetches new
 - **Local execution** (no cloud hosting required)
 
 ## 🛠 Tech Stack
+
 - **Python**
 - **Requests & BeautifulSoup** (for web scraping)
 - **Pandas** (for data processing)
@@ -22,6 +25,7 @@ This project is a **real-time news scraper and analytics tool** that fetches new
 - **Matplotlib** (for visualization)
 
 ## 📂 Project Structure
+
 ```
 news-scraper/
 │── scraper.py          # Script for web scraping
@@ -32,6 +36,7 @@ news-scraper/
 ```
 
 ## 🔧 Setup Instructions
+
 1. **Clone the repository:**
    ```bash
    git clone https://github.com/your-username/news-scraper.git
@@ -51,10 +56,10 @@ news-scraper/
    ```
 
 ## 📌 Next Steps
+
 - Implement real-time updates
 - Add more filtering options
 - Improve the GUI design
 
 Feel free to contribute or suggest improvements! 🚀
-
->>>>>>> 6a0793b (add README.md with project overview, features, tech stack, and setup instructions)
+<<<<<<< HEAD
